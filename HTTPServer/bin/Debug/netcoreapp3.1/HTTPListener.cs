@@ -60,7 +60,7 @@ namespace HTTPServer
             using (var sr = new StreamReader(clientStream))
             using (var sw = new StreamWriter(clientStream))
             {
-                RequestMessage request = GetRequest(remoteClient, sr);
+                RequestMessage request = GetRequest(sr);
 
                 if (request.HttpMethod != null && Handlers.ContainsKey(request.HttpMethod))
                 {
@@ -102,14 +102,13 @@ namespace HTTPServer
             }
         }
 
-        public RequestMessage GetRequest(TcpClient remoteClient, StreamReader sr)
+        public RequestMessage GetRequest(StreamReader sr)
         {
             RequestMessage requestMessage = new RequestMessage();
 
             // Headers
-            var firstLine = "";
             var line = sr.ReadLine();
-            firstLine = line;
+            var firstLine = line;
             line = sr.ReadLine();
             while (line != null && line != "")
             {
@@ -128,7 +127,16 @@ namespace HTTPServer
             {
                 var split = firstLine.Split(' ');
                 requestMessage.HttpMethod = new HttpMethod(split[0]);
-                requestMessage.Query = split[1];
+                if (split[1].Contains('?'))
+                {
+                    var splitPath = split[1].Split('?');
+                    requestMessage.Path = splitPath[0];
+                    requestMessage.Query = splitPath[1];
+                }
+                else
+                {
+                    requestMessage.Path = split[1];
+                }
             }
 
             // Body

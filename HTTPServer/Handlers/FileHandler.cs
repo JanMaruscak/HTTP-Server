@@ -18,7 +18,7 @@ namespace HTTPServer.Handlers
 
         public override bool CanHandle(RequestMessage request)
         {
-            if (request.Query != URL) return false;
+            if (request.Path != URL) return false;
             if (!File.Exists(FilePath)) return false;
 
             return true;
@@ -26,8 +26,10 @@ namespace HTTPServer.Handlers
 
         public override ResponseMessage Process(RequestMessage request)
         {
-            ResponseMessage response = new ResponseMessage();
-            response.Body = new MemoryStream();
+            ResponseMessage response = new ResponseMessage
+            {
+                Body = new MemoryStream()
+            };
 
             var fs = new FileStream(FilePath, FileMode.Open);
             fs.CopyTo(response.Body);

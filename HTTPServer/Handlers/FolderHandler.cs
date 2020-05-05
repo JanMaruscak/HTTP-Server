@@ -28,7 +28,7 @@ namespace HTTPServer.Handlers
             fs.Close();
             response.Body.Position = 0;
 
-            string mimeType = MimeTypeLookup.GetMimeType(request.Query);
+            string mimeType = MimeTypeLookup.GetMimeType(request.Path);
             response.Headers.Add("Content-Type", mimeType);
             response.StatusCode = HttpStatusCode.OK;
 
@@ -37,8 +37,8 @@ namespace HTTPServer.Handlers
 
         public string GetFileRequestName(RequestMessage request)
         {
-            if (!request.Query.Contains('.')) return "";
-            var split = request.Query.Split('/');
+            if (!request.Path.Contains('.')) return "";
+            var split = request.Path.Split('/');
             if (split.Length <= 1) return "";
 
             string name = "";
@@ -56,7 +56,7 @@ namespace HTTPServer.Handlers
         public override bool CanHandle(RequestMessage request)
         {
             if (!Directory.Exists(FolderLocation)) return false;
-            if (!request.Query.StartsWith(URL + "/") && URL != "/" && request.Query != URL) return false;
+            if (!request.Path.StartsWith(URL + "/") && URL != "/" && request.Path != URL) return false;
             var path = FolderLocation + GetFileRequestName(request);
             if (!File.Exists(path)) return false;
 

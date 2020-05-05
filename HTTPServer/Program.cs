@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using HTTPServer.Handlers;
@@ -25,7 +26,7 @@ namespace HTTPServer
         {
             var dataString = string.IsNullOrWhiteSpace(req.Body) ? "NULL" : req.Body;
             Console.WriteLine("Data is: " + dataString);
-            return new ResponseMessage("Data recieved");
+            return new ResponseMessage($"Path: {req.Path}; Query: {req.Query}");
         }
 
         public static ResponseMessage TestFunc2(RequestMessage req)

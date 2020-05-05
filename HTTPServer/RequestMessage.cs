@@ -11,6 +11,7 @@ namespace HTTPServer
     {
         public Dictionary<string, string> Headers = new Dictionary<string, string>();
         public HttpMethod HttpMethod;
+        public string Path;
         public string Query;
         public string Body = null;
 

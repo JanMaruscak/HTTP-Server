@@ -1319,7 +1319,7 @@ namespace HTTPServer
             string extension = Path.GetExtension(fileName);
 
             string mimeType;
-            if (!String.IsNullOrEmpty(extension) && _mappings.TryGetValue(extension, out mimeType))
+            if (!string.IsNullOrEmpty(extension) && _mappings.TryGetValue(extension, out mimeType))
                 return mimeType;
 
             return "application/octet-stream";

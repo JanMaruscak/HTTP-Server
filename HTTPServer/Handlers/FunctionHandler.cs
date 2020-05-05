@@ -17,7 +17,7 @@ namespace HTTPServer.Handlers
 
         public override bool CanHandle(RequestMessage request)
         {
-            if (URL != request.Query) return false;
+            if (URL != request.Path) return false;
             return true;
         }
 
